@@ -6,7 +6,7 @@
     - name: Creates temp directory
       file: path=/temp state=directory owner=ubuntu group=ubuntu mode=0775
     - name: Creates nodejsserver directory
-      file: path=/backsplash-server state=directory owner=ubuntu group=ubuntu mode=0775
+      file: path=/del-server state=directory owner=ubuntu group=ubuntu mode=0775
     - name: Fix 'nginx html' permissions
       file: path=/usr/share/nginx/html owner=ubuntu group=ubuntu mode=0775 state=directory recurse=yes
     - name: Fix 'nodejs server' permissions
