@@ -1,0 +1,3 @@
+// placeholder, place all your docker run commands in here run this as ssh script with ansible
+// if using ssl or installing wordpress, use certbot first, and access website during install with domain name
+// to ensure that the domain name does not use the IP, instead uses domain

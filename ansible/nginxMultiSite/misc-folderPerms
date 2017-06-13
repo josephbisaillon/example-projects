@@ -1,0 +1,13 @@
+#if required, run this to change folder perms or add directories etc
+- hosts: web-production
+  tasks:
+    - name: Creates microservices directory
+      file: path=/microservices state=directory owner=ubuntu group=ubuntu mode=0775
+    - name: Creates temp directory
+      file: path=/temp state=directory owner=ubuntu group=ubuntu mode=0775
+    - name: Creates nodejsserver directory
+      file: path=/backsplash-server state=directory owner=ubuntu group=ubuntu mode=0775
+    - name: Fix 'nginx html' permissions
+      file: path=/usr/share/nginx/html owner=ubuntu group=ubuntu mode=0775 state=directory recurse=yes
+    - name: Fix 'nodejs server' permissions
+      file: path=/usr/share/nginx/html owner=ubuntu group=ubuntu mode=0775 state=directory recurse=yes

@@ -1,0 +1,55 @@
+- hosts: wphosts
+  roles:
+    - role: jdauphant.nginx
+      nginx_configs:
+        upgrade:
+             - map $http_upgrade $connection_upgrade {
+                  default update;
+                   '' close;
+                }
+
+      nginx_http_params:
+        - sendfile on
+        - access_log /var/log/nginx/access.log
+        - client_max_body_size 200M
+      # The user to run nginx
+      nginx_user: "www-data"
+
+      # A list of hashs that define the servers for nginx,
+      # as with http parameters. Any valid server parameters
+      # can be defined here.
+      nginx_sites:
+        default:
+          - listen 80
+          - listen [::]:80 default_server ipv6only=on
+          - listen 443 ssl
+          - server_name localhost
+          - root "/usr/share/nginx/html"
+          - index index.html index.htm
+          - |
+            location ~ /.well-known {
+              allow all;
+            }
+          - location / { try_files $uri $uri/ =404; }
+        exampleSite1.com:
+          - listen 80
+          - listen *:443 ssl
+          - server_name www.exampleSite2.com exampleSite2.com
+          - ssl_certificate_key /etc/letsencrypt/live/exampleSite1.com/privkey.pem
+          - ssl_certificate /etc/letsencrypt/live/exampleSite1.com/fullchain.pem
+          - |
+            location / {
+                proxy_pass http://localhost:5598;
+                proxy_set_header Host $host;
+            }
+        exampleSite2.com:
+          - listen 80
+          - listen *:443 ssl
+          - server_name www.exampleSite2.com exampleSite2.com
+          - ssl_certificate_key /etc/letsencrypt/live/exampleSite2.com/privkey.pem
+          - ssl_certificate /etc/letsencrypt/live/exampleSite2.com/fullchain.pem
+          - |
+            location / {
+                proxy_pass http://localhost:1477;
+                proxy_set_header Host $host;
+            }
